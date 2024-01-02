@@ -1,20 +1,37 @@
 ---
+// 1. Import statements
 import { type CollectionEntry, getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
+// 2. getStaticPaths function
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
+	// This function retrieves a collection of blog posts.
+	// 'getCollection' is a method from Astro's content collection features.
+
 	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
+		// Mapping over each post to create an object for each route.
+		params: { slug: post.slug }, // Parameters for the route, typically the post's slug.
+		props: post, // Props to be passed to the page component.
 	}));
 }
-type Props = CollectionEntry<'blog'>;
 
+// 3. Type definition for Props
+type Props = CollectionEntry<'blog'>;
+// This type defines the structure of the props expected by the component.
+// It uses 'CollectionEntry' from Astro's content features, tailored for the 'blog' collection.
+
+// 4. Accessing Astro's built-in props
 const post = Astro.props;
+// Here, we're accessing the props passed to this Astro component.
+
+// 5. Render the content of the blog post
 const { Content } = await post.render();
+// The 'render' method is used to render the content of the blog post.
+// 'Content' is a React component that represents the rendered markdown or other content.
 ---
 
 <BlogPost {...post.data}>
 	<Content />
 </BlogPost>
+
